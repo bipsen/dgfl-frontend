@@ -28,6 +28,7 @@ const auth = useFirebaseAuth()
 function logout() {
   signOut(auth!).then(() => {
     appStore.drawer = false
+    appStore.curUserId = ''
     router.push({ path: '/login' })
   }).catch((error) => {
     // An error happened.
