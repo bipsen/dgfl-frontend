@@ -10,7 +10,7 @@
       My roster worth: {{ appStore.rosterValue }}
     </v-chip>
   </div>
-  <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="players" item-value="name">
+  <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name">
     <template v-slot:item.actions="{ item }">
       <v-icon class="me-2" @click="buyPlayer(item.raw)">
         mdi-cart-outline
@@ -41,6 +41,9 @@ import { useAppStore } from '@/store/app'
 const appStore = useAppStore()
 const db = useFirestore()
 
+const userRef = doc(db, 'users', appStore.curUserId)
+const userData = useDocument(userRef)
+
 const players = useCollection(collection(db, 'players'))
 const playerMap = computed(() => {
   return players.value.reduce((acc, player) => {
@@ -49,8 +52,16 @@ const playerMap = computed(() => {
   }, {});
 })
 
-const userRef = doc(db, 'users', appStore.curUserId)
-const userData = useDocument(userRef)
+const unboughtPlayers = computed(() => {
+  if (userData.value) {
+    return players.value.reduce((acc, player) => {
+      if (!userData.value.roster.includes(player.id)) {
+        acc.push(player);
+      }
+      return acc;
+    }, []);
+  }
+})
 
 const itemsPerPage = ref(10)
 const headers = [
@@ -73,14 +84,13 @@ function cancelBuyPlayer() {
 }
 
 async function buyPlayerConfirm() {
+  dialogBuy.value = false
   if (playerToBuy.value) {
-
     await updateDoc(userRef, {
       roster: arrayUnion(playerToBuy.value)
     });
   }
 
-  dialogBuy.value = false
   playerToBuy.value = null
 }
 </script>

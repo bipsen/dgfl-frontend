@@ -8,14 +8,14 @@
   <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
     <template v-slot:item.actions="{ item }">
       <v-icon class="me-2" @click="sellPlayer(item.raw)">
-        mdi-cart-outline
+        mdi-cash-fast
       </v-icon>
     </template>
   </v-data-table>
 
   <v-dialog v-model="dialogSell">
     <v-card title="Sell player">
-      <v-card-text>Are you sure you want to buy {{ playerToSell? playerMap[playerToSell].name : null}}?
+      <v-card-text>Are you sure you want to sell {{ playerToSell? playerMap[playerToSell].name : null}}?
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -30,13 +30,15 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
-import { collection, doc } from 'firebase/firestore'
+import { collection, doc, updateDoc, arrayRemove } from 'firebase/firestore'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
 const db = useFirestore()
 
-const userData = useDocument(doc(db, 'users', appStore.curUserId))
+const userRef = doc(db, 'users', appStore.curUserId)
+const userData = useDocument(userRef)
+
 const players = useCollection(collection(db, 'players'))
 const playerMap = computed(() => {
   return players.value.reduce((acc, player) => {
@@ -74,12 +76,13 @@ function cancelSellPlayer() {
   playerToSell.value = null
 }
 
-function sellPlayerConfirm() {
-  if (playerToSell.value) {
-    console.log(playerMap.value[playerToSell.value].name)
-    console.log(playerMap.value[playerToSell.value].price)
-  }
+async function sellPlayerConfirm() {
   dialogSell.value = false
+  if (playerToSell.value) {
+    await updateDoc(userRef, {
+      roster: arrayRemove(playerToSell.value)
+    });
+  }
   playerToSell.value = null
 }
 </script>
