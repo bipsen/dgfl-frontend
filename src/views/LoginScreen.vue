@@ -19,18 +19,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useFirebaseAuth } from 'vuefire'
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from 'vue-router'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useFirebaseAuth, getCurrentUser } from 'vuefire'
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const router = useRouter()
+const route = useRoute()
 const auth = useFirebaseAuth()
 const form = ref(false)
 const email = ref(null)
 const password = ref(null)
 const loading = ref(false)
+
+// https://vuefire.vuejs.org/guide/auth.html
+onMounted(async () => {
+    const currentUser = await getCurrentUser()
+    if (currentUser) {
+        const to =
+            route.query.redirectTo && typeof route.query.redirectTo === 'string'
+                ? route.query.redirectTo
+                : '/'
+
+        router.push(to)
+    }
+})
 
 function onLogIn() {
     loading.value = true
