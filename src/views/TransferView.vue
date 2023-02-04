@@ -2,14 +2,13 @@
   <div class="text-center">
     <v-chip class="ma-2" color="success" variant="outlined">
       <v-icon start icon="mdi-cash"></v-icon>
-      Cash: {{ appStore.cash }}
+      Cash: {{ 9 }}
     </v-chip>
 
     <v-chip class="ma-2" color="primary" variant="outlined">
       <v-icon start icon="mdi-currency-usd"></v-icon>
       My roster worth: {{ appStore.rosterValue }}
     </v-chip>
-
   </div>
   <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="players" item-value="name">
     <template v-slot:item.actions="{ item }">
@@ -35,17 +34,14 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { useFirestore } from 'vuefire'
-import { useCollection } from 'vuefire'
-import { collection } from 'firebase/firestore'
+import { useFirestore, useCollection, useDocument } from 'vuefire'
+import { collection, doc } from 'firebase/firestore'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
-
 const db = useFirestore()
 
 const players = useCollection(collection(db, 'players'))
-
 const playerMap = computed(() => {
   return players.value.reduce((acc, player) => {
     acc[player.id] = player;

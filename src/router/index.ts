@@ -1,6 +1,7 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import { getCurrentUser } from 'vuefire'
+import { useAppStore } from '@/store/app'
 
 const routes = [
   {
@@ -75,9 +76,11 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  const appStore = useAppStore()
   // routes with `meta: { requiresAuth: true }` will check for the users, others won't
   if (to.meta.requiresAuth) {
     const currentUser = await getCurrentUser()
+    appStore.curUserId = currentUser ? currentUser.uid : ''
     // if the user is not logged in, redirect to the login page
     if (!currentUser) {
       return {

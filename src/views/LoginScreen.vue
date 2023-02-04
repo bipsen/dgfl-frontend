@@ -23,7 +23,9 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useFirebaseAuth, getCurrentUser } from 'vuefire'
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useAppStore } from '@/store/app'
 
+const appStore = useAppStore()
 const router = useRouter()
 const route = useRoute()
 const auth = useFirebaseAuth()
@@ -50,7 +52,7 @@ function onLogIn() {
     signInWithEmailAndPassword(auth!, email.value!, password.value!)
         .then((userCredential) => {
             loading.value = false
-            const user = userCredential.user;
+            const user = userCredential.user
             router.push('/home')
         })
         .catch((error) => {

@@ -20,12 +20,16 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useFirebaseAuth } from 'vuefire'
+import { useFirestore, useFirebaseAuth } from 'vuefire'
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'vue-router'
+import { useAppStore } from '@/store/app'
+
+const appStore = useAppStore()
 
 const router = useRouter()
-
+const db = useFirestore()
 const auth = useFirebaseAuth()
 
 const form = ref(false)
@@ -38,6 +42,7 @@ function onSignUp() {
     createUserWithEmailAndPassword(auth!, email.value!, password.value!)
         .then((userCredential) => {
             const user = userCredential.user
+            createUserEntry(user.uid)
             loading.value = false
             router.push('/home')
         })
@@ -46,6 +51,13 @@ function onSignUp() {
             const errorMessage = error.message;
             loading.value = false
         });
+}
+
+async function createUserEntry(uid: string) {
+    // Add a new document in collection "cities"
+    await setDoc(doc(db, "users", uid), {
+        cash: 1000000,
+    });
 }
 
 
