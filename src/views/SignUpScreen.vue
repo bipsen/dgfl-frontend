@@ -57,6 +57,7 @@ async function createUserEntry(uid: string) {
     // Add a new document in collection "cities"
     await setDoc(doc(db, "users", uid), {
         cash: 1000000,
+        roster: []
     });
 }
 

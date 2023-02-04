@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-chip class="ma-2" color="success" variant="outlined">
       <v-icon start icon="mdi-cash"></v-icon>
-      Cash: {{ 9 }}
+      Cash: {{ userData?.cash }}
     </v-chip>
 
     <v-chip class="ma-2" color="primary" variant="outlined">
@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
-import { collection, doc } from 'firebase/firestore'
+import { collection, doc, updateDoc, arrayUnion } from 'firebase/firestore'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
@@ -48,6 +48,9 @@ const playerMap = computed(() => {
     return acc;
   }, {});
 })
+
+const userRef = doc(db, 'users', appStore.curUserId)
+const userData = useDocument(userRef)
 
 const itemsPerPage = ref(10)
 const headers = [
@@ -69,11 +72,14 @@ function cancelBuyPlayer() {
   playerToBuy.value = null
 }
 
-function buyPlayerConfirm() {
+async function buyPlayerConfirm() {
   if (playerToBuy.value) {
-    console.log(playerMap.value[playerToBuy.value].name)
-    console.log(playerMap.value[playerToBuy.value].price)
+
+    await updateDoc(userRef, {
+      roster: arrayUnion(playerToBuy.value)
+    });
   }
+
   dialogBuy.value = false
   playerToBuy.value = null
 }
