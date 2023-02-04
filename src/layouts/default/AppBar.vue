@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar>
+  <v-app-bar color="red">
     <template v-slot:prepend>
       <v-app-bar-nav-icon @click="appStore.drawer = !appStore.drawer"></v-app-bar-nav-icon>
     </template>
