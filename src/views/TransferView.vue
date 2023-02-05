@@ -1,15 +1,5 @@
 <template>
-  <div class="text-center">
-    <v-chip class="ma-2" color="success" variant="outlined">
-      <v-icon start icon="mdi-cash"></v-icon>
-      Cash: {{ userData?.cash }}
-    </v-chip>
-
-    <v-chip class="ma-2" color="primary" variant="outlined">
-      <v-icon start icon="mdi-currency-usd"></v-icon>
-      My roster worth: {{ appStore.rosterValue }}
-    </v-chip>
-  </div>
+  <valueChips />
   <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name">
     <template v-slot:item="{ item }">
       <tr>
@@ -41,6 +31,7 @@
 </template>
 
 <script lang="ts" setup>
+import valueChips from '@/components/valueChips.vue'
 import { ref, computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
 import { collection, doc, updateDoc, arrayUnion, increment } from 'firebase/firestore'
