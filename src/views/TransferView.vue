@@ -10,7 +10,7 @@
         <tr>
           <td>{{ item.columns.name }}</td>
           <td>{{ item.columns.team }}</td>
-          <td>{{ item.columns.price }}</td>
+          <td>{{ item.columns.price.toLocaleString() }}</td>
           <td>
             <v-btn icon="mdi-cart-outline" :disabled="item.columns.price > userData?.cash" class="me-2"
               @click="buyPlayer(item.raw)" variant="text" />
