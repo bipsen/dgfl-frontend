@@ -1,10 +1,12 @@
 <template>
-  <valueChips />
-  <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
-    <template v-slot:item.actions="{ item }">
-      <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item.raw)" variant="text" />
-    </template>
-  </v-data-table>
+  <v-card class="pa-6">
+    <valueChips />
+    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
+      <template v-slot:item.actions="{ item }">
+        <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item.raw)" variant="text" />
+      </template>
+    </v-data-table>
+  </v-card>
 
   <v-dialog v-model="dialogSell">
     <v-card title="Sell player">
