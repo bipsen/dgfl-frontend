@@ -1,5 +1,10 @@
 <template>
   <div class="text-center">
+    <v-chip class="ma-2" color="success" variant="outlined">
+      <v-icon start icon="mdi-cash"></v-icon>
+      Cash: {{ userData?.cash }}
+    </v-chip>
+
     <v-chip class="ma-2" color="primary" variant="outlined">
       <v-icon start icon="mdi-currency-usd"></v-icon>
       My roster worth: {{ appStore.rosterValue }}
@@ -7,9 +12,7 @@
   </div>
   <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
     <template v-slot:item.actions="{ item }">
-      <v-icon class="me-2" @click="sellPlayer(item.raw)">
-        mdi-cash-fast
-      </v-icon>
+      <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item.raw)" variant="text" />
     </template>
   </v-data-table>
 
@@ -30,7 +33,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
-import { collection, doc, updateDoc, arrayRemove } from 'firebase/firestore'
+import { collection, doc, updateDoc, arrayRemove, increment } from 'firebase/firestore'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
@@ -59,8 +62,8 @@ const myRoster = computed(() => {
 const itemsPerPage = ref(10)
 const headers = [
   { title: 'Name', align: 'end', key: 'name' },
-  { title: 'Price', align: 'end', key: 'price' },
-  { title: 'Actions', align: 'end', key: 'actions', sortable: false },
+  { title: 'Value', align: 'end', key: 'price' },
+  { title: 'Sell', align: 'end', key: 'actions', sortable: false },
 ]
 
 const dialogSell = ref(false)
@@ -79,6 +82,10 @@ function cancelSellPlayer() {
 async function sellPlayerConfirm() {
   dialogSell.value = false
   if (playerToSell.value) {
+    const playerPrice = playerMap.value[playerToSell.value].price
+    await updateDoc(userRef, {
+      cash: increment(playerPrice)
+    });
     await updateDoc(userRef, {
       roster: arrayRemove(playerToSell.value)
     });

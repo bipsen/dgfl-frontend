@@ -1,19 +1,34 @@
 <template>
     <v-sheet class="pa-12" rounded>
-        <v-card class="mx-auto px-6 py-8" max-width="344" title="Log in">
-            <v-form v-model="form" @submit.prevent="onLogIn">
-                <v-text-field v-model="email" :readonly="loading" class="mb-2" clearable label="Email"></v-text-field>
+        <v-card class="mx-auto px-6 py-8" rounded="lg">
 
-                <v-text-field v-model="password" :readonly="loading" clearable label="Password"
-                    placeholder="Enter your password" type="password"></v-text-field>
-                <br>
-                <v-btn :disabled="!form" :loading="loading" block size="large" type="submit" variant="elevated">
-                    Sign In
-                </v-btn>
-                <br>
-                <span>Don't have an account yet? </span>
-                <span style="font-weight:bold" @click="router.push('/signup')">Sign up!</span>
-            </v-form>
+            <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+
+            <v-text-field v-model="email" density="compact" placeholder="Email address"
+                prepend-inner-icon="mdi-email-outline" variant="outlined" />
+
+            <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+                Password
+                <a class="text-caption text-decoration-none text-blue" href="#" rel="noopener noreferrer"
+                    target="_blank">
+                    Forgot login password?
+                </a>
+            </div>
+
+            <v-text-field v-model="password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="visible ? 'text' : 'password'" density="compact" placeholder="Enter your password"
+                prepend-inner-icon="mdi-lock-outline" variant="outlined" @click:append-inner="visible = !visible" />
+
+            <v-btn block class="mb-8" size="large" variant="tonal" @click="onLogIn">
+                Log In
+            </v-btn>
+
+            <v-card-text class="text-center">
+                <a class="text-blue text-decoration-none" href="/signup" rel="noopener noreferrer">
+                    Sign up now
+                    <v-icon icon="mdi-chevron-right"></v-icon>
+                </a>
+            </v-card-text>
         </v-card>
     </v-sheet>
 </template>
@@ -30,6 +45,7 @@ const router = useRouter()
 const route = useRoute()
 const auth = useFirebaseAuth()
 const form = ref(false)
+const visible = ref(false)
 const email = ref(null)
 const password = ref(null)
 const loading = ref(false)

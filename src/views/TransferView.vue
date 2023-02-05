@@ -11,10 +11,15 @@
     </v-chip>
   </div>
   <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name">
-    <template v-slot:item.actions="{ item }">
-      <v-icon class="me-2" @click="buyPlayer(item.raw)">
-        mdi-cart-outline
-      </v-icon>
+    <template v-slot:item="{ item }">
+      <tr>
+        <td>{{ item.columns.name }}</td>
+        <td>{{ item.columns.price }}</td>
+        <td>
+          <v-btn icon="mdi-cart-outline" :disabled="item.columns.price > userData?.cash" class="me-2"
+            @click="buyPlayer(item.raw)" variant="text" />
+        </td>
+      </tr>
     </template>
   </v-data-table>
 
@@ -35,7 +40,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
-import { collection, doc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { collection, doc, updateDoc, arrayUnion, increment } from 'firebase/firestore'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
@@ -67,7 +72,7 @@ const itemsPerPage = ref(10)
 const headers = [
   { title: 'Name', align: 'end', key: 'name' },
   { title: 'Price', align: 'end', key: 'price' },
-  { title: 'Actions', align: 'end', key: 'actions', sortable: false },
+  { title: 'Buy', align: 'end', key: 'actions', sortable: false },
 ]
 
 const dialogBuy = ref(false)
@@ -86,9 +91,17 @@ function cancelBuyPlayer() {
 async function buyPlayerConfirm() {
   dialogBuy.value = false
   if (playerToBuy.value) {
-    await updateDoc(userRef, {
-      roster: arrayUnion(playerToBuy.value)
-    });
+    const playerPrice = playerMap.value[playerToBuy.value].price
+    if (playerPrice <= userData.value.cash) {
+      await updateDoc(userRef, {
+        cash: increment(-playerPrice)
+      });
+      await updateDoc(userRef, {
+        roster: arrayUnion(playerToBuy.value)
+      });
+    } else {
+      console.log("Too expensive")
+    }
   }
 
   playerToBuy.value = null
