@@ -1,20 +1,25 @@
 <template>
-  <valueChips />
-  <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name">
-    <template v-slot:item="{ item }">
-      <tr>
-        <td>{{ item.columns.name }}</td>
-        <td>{{ item.columns.team }}</td>
-        <td>
-          <div v-if="item.columns.team == 'MVP'">{{ item.columns.price }}</div>
-        </td>
-        <td>
-          <v-btn icon="mdi-cart-outline" :disabled="item.columns.price > userData?.cash" class="me-2"
-            @click="buyPlayer(item.raw)" variant="text" />
-        </td>
-      </tr>
-    </template>
-  </v-data-table>
+  <v-card class="pa-6">
+    <valueChips />
+
+    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+
+    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name"
+      :search="search">
+      <template v-slot:item="{ item }">
+        <tr>
+          <td>{{ item.columns.name }}</td>
+          <td>{{ item.columns.team }}</td>
+          <td>{{ item.columns.price }}</td>
+          <td>
+            <v-btn icon="mdi-cart-outline" :disabled="item.columns.price > userData?.cash" class="me-2"
+              @click="buyPlayer(item.raw)" variant="text" />
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+  </v-card>
+
 
   <v-dialog v-model="dialogBuy">
     <v-card title="Buy player">
@@ -63,6 +68,7 @@ const unboughtPlayers = computed(() => {
 })
 
 const itemsPerPage = ref(10)
+const search = ref("")
 const headers = [
   { title: 'Name', align: 'start', key: 'name' },
   { title: 'Team', align: 'start', key: 'team' },
