@@ -14,7 +14,10 @@
     <template v-slot:item="{ item }">
       <tr>
         <td>{{ item.columns.name }}</td>
-        <td>{{ item.columns.price }}</td>
+        <td>{{ item.columns.team }}</td>
+        <td>
+          <div v-if="item.columns.team == 'MVP'">{{ item.columns.price }}</div>
+        </td>
         <td>
           <v-btn icon="mdi-cart-outline" :disabled="item.columns.price > userData?.cash" class="me-2"
             @click="buyPlayer(item.raw)" variant="text" />
@@ -70,9 +73,10 @@ const unboughtPlayers = computed(() => {
 
 const itemsPerPage = ref(10)
 const headers = [
-  { title: 'Name', align: 'end', key: 'name' },
-  { title: 'Price', align: 'end', key: 'price' },
-  { title: 'Buy', align: 'end', key: 'actions', sortable: false },
+  { title: 'Name', align: 'start', key: 'name' },
+  { title: 'Team', align: 'start', key: 'team' },
+  { title: 'Price', align: 'start', key: 'price' },
+  { title: 'Buy', align: 'start', key: 'actions', sortable: false },
 ]
 
 const dialogBuy = ref(false)

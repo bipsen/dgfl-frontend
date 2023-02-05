@@ -19,7 +19,7 @@
                 Team
             </div>
 
-            <v-select :items="teams" variant="underlined" density="compact" />
+            <v-select v-model="team" :items="teams" variant="underlined" density="compact" />
 
             <v-btn block class="mb-8" size="large" variant="tonal" @click="onSignUp">
                 Sign Up
@@ -27,7 +27,7 @@
 
             <v-card-text class="text-center">
                 <a class="text-blue text-decoration-none" href="/login" rel="noopener noreferrer">
-                    Sign up now
+                    I already have an account
                     <v-icon icon="mdi-chevron-right"></v-icon>
                 </a>
             </v-card-text>
@@ -54,7 +54,12 @@ const visible = ref(false)
 const email = ref(null)
 const password = ref(null)
 const loading = ref(false)
-const teams = ref(['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming'])
+const teams = ref(
+    ['DGA', 'Discmania', 'Discraft', 'Dynamic Discs', 'Infinite/Clash/Thought Space',
+        'Innova', 'Latitude 64', 'Lone Star Discs', 'MVP', 'Other', 'Prodigy',
+        'Westside Discs', 'Kastaplast', 'Gateway Disc Sports'
+    ])
+const team = ref(teams.value[0])
 
 function onSignUp() {
     loading.value = true
@@ -76,7 +81,8 @@ async function createUserEntry(uid: string) {
     // Add a new document in collection "cities"
     await setDoc(doc(db, "users", uid), {
         cash: 1000000,
-        roster: []
+        roster: [],
+        team: team.value
     });
 }
 
