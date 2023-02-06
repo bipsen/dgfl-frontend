@@ -1,14 +1,19 @@
 <template>
     <div class="text-center">
-        <v-chip class="ma-2" color="success" variant="outlined">
-            <v-icon start icon="mdi-cash"></v-icon>
-            Cash: {{ userData?.cash }}
-        </v-chip>
-
-        <v-chip class="ma-2" color="primary" variant="outlined">
-            <v-icon start icon="mdi-currency-usd"></v-icon>
-            My roster worth: {{ rosterValue }}
-        </v-chip>
+        <v-row>
+            <v-col>
+                <v-chip class="ma-2" color="success" variant="outlined">
+                    <v-icon start icon="mdi-cash"></v-icon>
+                    Cash: {{ userData?.cash.toLocaleString() }}
+                </v-chip>
+            </v-col>
+            <v-col>
+                <v-chip class="ma-2" color="primary" variant="outlined">
+                    <v-icon start icon="mdi-currency-usd"></v-icon>
+                    Roster: {{ rosterValue.toLocaleString() }}
+                </v-chip>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
