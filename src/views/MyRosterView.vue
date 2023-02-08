@@ -3,7 +3,7 @@
     <valueChips />
     <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
       <template v-slot:item.price="{ item }">
-        {{ item.columns.price.toLocaleString() }}
+        {{ item.columns.price?.toLocaleString() }}
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item.raw)" variant="text" />

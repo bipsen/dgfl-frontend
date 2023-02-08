@@ -19,7 +19,6 @@ import {
   LinearScale
 } from 'chart.js'
 import { Bar } from 'vue-chartjs'
-import * as chartConfig from './chartConfig.js'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
@@ -39,7 +38,7 @@ const userWorth = computed(() => {
     labels: [],
     datasets: [
       {
-        label: 'Leaderboard',
+        label: 'Roster worth',
         backgroundColor: '#f87979',
         data: []
       }

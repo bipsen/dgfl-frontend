@@ -10,7 +10,7 @@
             <v-col>
                 <v-chip class="ma-2" color="primary" variant="outlined">
                     <v-icon start icon="mdi-currency-usd"></v-icon>
-                    Roster: {{ rosterValue.toLocaleString() }}
+                    Roster: {{ rosterValue?.toLocaleString() }}
                 </v-chip>
             </v-col>
         </v-row>
@@ -40,7 +40,7 @@ const playerMap = computed(() => {
 const rosterValue = computed(() => {
     if (userData.value) {
         return userData.value.roster.reduce((acc, playerId) => {
-            acc += playerMap.value[playerId].price
+            acc += playerMap.value[playerId]?.price
             return acc;
         }, 0);
     }
