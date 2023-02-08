@@ -1,19 +1,15 @@
 <template>
-    <div class="text-center">
-        <v-row>
-            <v-col>
-                <v-chip class="ma-2" color="success" variant="outlined">
-                    <v-icon start icon="mdi-cash"></v-icon>
-                    Cash: {{ userData?.cash.toLocaleString() }}
-                </v-chip>
-            </v-col>
-            <v-col>
-                <v-chip class="ma-2" color="primary" variant="outlined">
-                    <v-icon start icon="mdi-currency-usd"></v-icon>
-                    Roster: {{ rosterValue?.toLocaleString() }}
-                </v-chip>
-            </v-col>
-        </v-row>
+    <div class="text-center px-12 py-6">
+        <v-card color="green">
+            <div>
+                <v-icon icon="mdi-cash" />
+                Cash: {{ userData?.cash.toLocaleString() }}
+            </div>
+            <div>
+                <v-icon icon="mdi-currency-usd" />
+                Roster: {{ rosterValue?.toLocaleString() }}
+            </div>
+        </v-card>
     </div>
 </template>
 

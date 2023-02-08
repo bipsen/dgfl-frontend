@@ -2,8 +2,7 @@
   <v-card class="pa-6" title="Scoring System">
     <v-list density="compact">
       <v-list-subheader>Per Hole Scoring</v-list-subheader>
-      <v-list-item>Double Eagle: 20.000</v-list-item>
-      <v-list-item>Double Eagle: 20.000</v-list-item>
+      <v-list-item>Albatross: 20.000</v-list-item>
       <v-list-item>Eagle: 8.000</v-list-item>
       <v-list-item>Birdie: 3.000</v-list-item>
       <v-list-item>Par: 500</v-list-item>
@@ -14,8 +13,8 @@
 
     <v-list density="compact">
       <v-list-subheader>Tournament Finish Scoring</v-list-subheader>
-      <v-list-item>1st: 30.000</v-list-item>
-      <v-list-item>2nd: 20.000</v-list-item>
+      <v-list-item>1st: 60.000</v-list-item>
+      <v-list-item>2nd: 30.000</v-list-item>
       <v-list-item>3rd: 18.000</v-list-item>
       <v-list-item>4th: 16.000</v-list-item>
       <v-list-item>5th: 14.000</v-list-item>
@@ -36,7 +35,6 @@
       <v-list-subheader>Streaks and Bonuses</v-list-subheader>
       <v-list-item>Streak of 3 Birdies of Better (Max 1 Per Round): 3.000</v-list-item>
       <v-list-item>Bogey Free Round: 3.000</v-list-item>
-      <v-list-item>All 4 Rounds Under 70 Strokes: 5.000</v-list-item>
       <v-list-item>Ace: 10.000</v-list-item>
     </v-list>
   </v-card>

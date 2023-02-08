@@ -2,8 +2,8 @@
   <v-navigation-drawer v-model="appStore.drawer" location="bottom" temporary>
     <v-list nav>
       <v-list-item prepend-icon="mdi-home" title="Home" to="/home"></v-list-item>
-      <v-list-item prepend-icon="mdi-view-dashboard" title="Events" to="/events"></v-list-item>
-      <v-list-item prepend-icon="mdi-forum" title="Rules" to="/rules"></v-list-item>
+      <v-list-item prepend-icon="mdi-calendar" title="Events" to="/events"></v-list-item>
+      <v-list-item prepend-icon="mdi-script" title="Rules" to="/rules"></v-list-item>
     </v-list>
 
     <template v-slot:append>
