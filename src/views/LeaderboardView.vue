@@ -39,9 +39,14 @@ const userWorth = computed(() => {
     datasets: [
       {
         label: 'Roster worth',
-        backgroundColor: '#f87979',
+        backgroundColor: '#cf6679',
         data: []
-      }
+      },
+      {
+        label: 'Cash',
+        backgroundColor: '#4caf50',
+        data: []
+      },
     ]
   }
 
@@ -55,6 +60,7 @@ const userWorth = computed(() => {
     }, 0);
     chartData.labels.push(user.name)
     chartData.datasets[0].data.push(acc_price)
+    chartData.datasets[1].data.push(user.cash)
   })
 
   return chartData
@@ -64,6 +70,15 @@ const options = {
   plugins: {
     legend: {
       display: false
+    }
+  },
+  responsive: true,
+  scales: {
+    x: {
+      stacked: true,
+    },
+    y: {
+      stacked: true
     }
   }
 }

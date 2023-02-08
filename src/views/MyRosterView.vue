@@ -13,7 +13,8 @@
 
   <v-dialog v-model="dialogSell">
     <v-card title="Sell player">
-      <v-card-text>Are you sure you want to sell {{ playerToSell? playerMap[playerToSell].name : null}}?
+      <v-card-text>
+        Are you sure you want to sell {{ playerToSell? playerMap[playerToSell].name : null}}?
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -23,6 +24,15 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-snackbar v-model="snackbar" :timeout="5000" color="error">
+    You bought this player this season. Please wait until after next event.
+    <template v-slot:actions>
+      <v-btn variant="text" @click="snackbar = false">
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script lang="ts" setup>
@@ -64,6 +74,7 @@ const headers = [
 
 const dialogSell = ref(false)
 const playerToSell = ref(null)
+const snackbar = ref(false)
 
 function sellPlayer(player: any) {
   playerToSell.value = player.id
@@ -77,14 +88,18 @@ function cancelSellPlayer() {
 
 async function sellPlayerConfirm() {
   dialogSell.value = false
-  if (playerToSell.value) {
-    const playerPrice = playerMap.value[playerToSell.value].price
-    await updateDoc(userRef, {
-      cash: increment(playerPrice)
-    });
-    await updateDoc(userRef, {
-      roster: arrayRemove(playerToSell.value)
-    });
+  if (playerToSell.value && userData.value) {
+    if (userData.value.justBought.includes(playerToSell.value)) {
+      snackbar.value = true
+    } else {
+      const playerPrice = playerMap.value[playerToSell.value].price
+      await updateDoc(userRef, {
+        cash: increment(playerPrice)
+      });
+      await updateDoc(userRef, {
+        roster: arrayRemove(playerToSell.value)
+      });
+    }
   }
   playerToSell.value = null
 }

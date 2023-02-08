@@ -5,15 +5,20 @@
     <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
 
     <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name"
-      :search="search">
+      :search="search" v-model:sort-by="sortBy">
       <template v-slot:item="{ item }">
         <tr>
           <td>{{ item.columns.name }}</td>
           <td>{{ item.columns.team }}</td>
-          <td>{{ item.columns.price.toLocaleString() }}</td>
+          <td v-if="item.columns.team != userData?.team">
+            {{ item.columns.price.toLocaleString() }}
+          </td>
+          <td v-else>
+            <s>{{ item.columns.price.toLocaleString() }}</s><br />
+            <span>{{ discountPrice(item.columns.price).toLocaleString() }}</span>
+          </td>
           <td>
-            <v-btn icon="mdi-cart-outline" :disabled="item.columns.price > userData?.cash" class="me-2"
-              @click="buyPlayer(item.raw)" variant="text" />
+            <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item.raw)" variant="text" />
           </td>
         </tr>
       </template>
@@ -23,7 +28,9 @@
 
   <v-dialog v-model="dialogBuy">
     <v-card title="Buy player">
-      <v-card-text>Are you sure you want to buy {{ playerToBuy? playerMap[playerToBuy].name : null}}?
+      <v-card-text>
+        Are you sure you want to buy {{ playerToBuy? playerMap[playerToBuy].name : null}}?
+        You can only sell after next event.
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -33,6 +40,15 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-snackbar v-model="snackbar" :timeout="5000" color="error">
+    You cannot afford this player
+    <template v-slot:actions>
+      <v-btn variant="text" @click="snackbar = false">
+        Close
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script lang="ts" setup>
@@ -59,7 +75,7 @@ const playerMap = computed(() => {
 const unboughtPlayers = computed(() => {
   if (userData.value) {
     return players.value.reduce((acc, player) => {
-      if (!userData.value.roster.includes(player.id)) {
+      if (!userData.value?.roster.includes(player.id)) {
         acc.push(player);
       }
       return acc;
@@ -69,6 +85,7 @@ const unboughtPlayers = computed(() => {
 
 const itemsPerPage = ref(10)
 const search = ref("")
+const sortBy = ref([{ key: 'price', order: 'desc' }],)
 const headers = [
   { title: 'Name', align: 'start', key: 'name' },
   { title: 'Team', align: 'start', key: 'team' },
@@ -78,6 +95,7 @@ const headers = [
 
 const dialogBuy = ref(false)
 const playerToBuy = ref(null)
+const snackbar = ref(false)
 
 function buyPlayer(player: any) {
   playerToBuy.value = player.id
@@ -92,19 +110,29 @@ function cancelBuyPlayer() {
 async function buyPlayerConfirm() {
   dialogBuy.value = false
   if (playerToBuy.value) {
-    const playerPrice = playerMap.value[playerToBuy.value].price
-    if (playerPrice <= userData.value.cash) {
+    let playerPrice = playerMap.value[playerToBuy.value].price
+    if (userData.value?.team == playerMap.value[playerToBuy.value].team) {
+      playerPrice = discountPrice(playerPrice)
+    }
+    if (playerPrice <= userData.value?.cash) {
       await updateDoc(userRef, {
         cash: increment(-playerPrice)
       });
       await updateDoc(userRef, {
         roster: arrayUnion(playerToBuy.value)
       });
+      await updateDoc(userRef, {
+        justBought: arrayUnion(playerToBuy.value)
+      });
     } else {
-      console.log("Too expensive")
+      snackbar.value = true
     }
   }
 
   playerToBuy.value = null
+}
+
+function discountPrice(price: number) {
+  return Math.round(price * .9)
 }
 </script>

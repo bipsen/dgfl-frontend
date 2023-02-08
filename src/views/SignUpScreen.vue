@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useFirestore, useFirebaseAuth } from 'vuefire'
+import { ref, computed } from 'vue'
+import { useFirestore, useFirebaseAuth, useCollection } from 'vuefire'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/store/app'
 
@@ -54,11 +54,13 @@ const visible = ref(false)
 const email = ref(null)
 const password = ref(null)
 const loading = ref(false)
-const teams = ref(
-    ['DGA', 'Discmania', 'Discraft', 'Dynamic Discs', 'Infinite/Clash/Thought Space',
-        'Innova', 'Latitude 64', 'Lone Star Discs', 'MVP', 'Other', 'Prodigy',
-        'Westside Discs', 'Kastaplast', 'Gateway Disc Sports'
-    ])
+const players = useCollection(collection(db, 'players'))
+const teams = computed(() => {
+    return players.value.reduce((acc, player) => {
+        acc.add(player.team);
+        return acc;
+    }, new Set);
+})
 const team = ref(teams.value[0])
 
 function onSignUp() {

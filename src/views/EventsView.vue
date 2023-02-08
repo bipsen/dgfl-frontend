@@ -6,9 +6,7 @@
           <th class="text-left">
             Title
           </th>
-          <th class="text-left">
-            Subtitle
-          </th>
+
           <th class="text-left">
             Start date
           </th>
@@ -19,10 +17,13 @@
       </thead>
       <tbody>
         <tr v-for="item in sortedEvents" :key="item.Title">
-          <td>{{ item.Title }}</td>
-          <td>{{ item.Subtitle }}</td>
+          <td>{{ item.Title }} {{ item.Subtitle }}</td>
           <td>{{ item.Date_start.toDate().toLocaleDateString() }}</td>
           <td>{{ item.Date_end.toDate().toLocaleDateString() }}</td>
+          <td>
+            <v-btn :href="`https://www.pdga.com/tour/event/${item.Event_no}`" target="_blank" icon="mdi-open-in-new"
+              variant="text" />
+          </td>
         </tr>
       </tbody>
     </v-table>
