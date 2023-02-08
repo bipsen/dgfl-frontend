@@ -4,6 +4,9 @@
 
             <div class="text-subtitle-1 text-medium-emphasis">Account</div>
 
+            <v-text-field v-model="name" density="compact" placeholder="Name" prepend-inner-icon="mdi-account"
+                variant="outlined" />
+
             <v-text-field v-model="email" density="compact" placeholder="Email address"
                 prepend-inner-icon="mdi-email-outline" variant="outlined" />
 
@@ -51,6 +54,7 @@ const auth = useFirebaseAuth()
 
 const form = ref(false)
 const visible = ref(false)
+const name = ref(null)
 const email = ref(null)
 const password = ref(null)
 const loading = ref(false)
@@ -84,6 +88,7 @@ async function createUserEntry(uid: string) {
     await setDoc(doc(db, "users", uid), {
         cash: 1000000,
         roster: [],
+        name: name.value,
         team: team.value
     });
 }

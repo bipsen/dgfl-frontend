@@ -1,6 +1,20 @@
 <template>
   <v-card class="pa-6" title="Leaderboard">
     <Bar :data="userWorth" :options="options" />
+    <v-list class="pa-6">
+      <v-toolbar>
+        <v-toolbar-title>
+          Players
+        </v-toolbar-title>
+      </v-toolbar>
+      <v-list-group v-for="user in users" :key="user.name" :value="user.name">
+        <template v-slot:activator="{ props }">
+          <v-list-item v-bind="props" :title="`${user.name} (${user.team})`"></v-list-item>
+        </template>
+
+        <v-list-item v-for="player in user.roster">{{ playerMap[player].name }}</v-list-item>
+      </v-list-group>
+    </v-list>
   </v-card>
 </template>
 
