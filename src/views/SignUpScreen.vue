@@ -74,7 +74,7 @@ function onSignUp() {
             const user = userCredential.user
             createUserEntry(user.uid)
             loading.value = false
-            router.push('/home')
+            router.push('/')
         })
         .catch((error) => {
             const errorCode = error.code;

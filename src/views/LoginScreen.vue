@@ -69,7 +69,7 @@ function onLogIn() {
         .then((userCredential) => {
             loading.value = false
             const user = userCredential.user
-            router.push('/home')
+            router.push('/')
         })
         .catch((error) => {
             const errorCode = error.code;
