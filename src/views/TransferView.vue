@@ -2,27 +2,64 @@
   <v-card class="pa-6">
     <valueChips />
 
-    <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+    <div v-if="!compatabilityMode">
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
 
-    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name"
-      :search="search" v-model:sort-by="sortBy">
-      <template v-slot:item="{ item }">
-        <tr>
-          <td>{{ item.columns.name }}</td>
-          <td>{{ item.columns.team }}</td>
-          <td v-if="item.columns.team != userData?.team">
-            {{ item.columns.price.toLocaleString() }}
-          </td>
-          <td v-else>
-            <s>{{ item.columns.price.toLocaleString() }}</s><br />
-            <span>{{ discountPrice(item.columns.price).toLocaleString() }}</span>
-          </td>
-          <td>
-            <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item.raw)" variant="text" />
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+      <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="unboughtPlayers" item-value="name"
+        :search="search" v-model:sort-by="sortBy">
+        <template v-slot:item="{ item }">
+          <tr>
+            <td>{{ item.columns.name }}</td>
+            <td>{{ item.columns.team }}</td>
+            <td v-if="item.columns.team != userData?.team">
+              {{ item.columns.price.toLocaleString() }}
+            </td>
+            <td v-else>
+              <s>{{ item.columns.price.toLocaleString() }}</s><br />
+              <span>{{ discountPrice(item.columns.price).toLocaleString() }}</span>
+            </td>
+            <td>
+              <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item.raw)" variant="text" />
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+
+      <v-card-text class="text-center">
+        <v-btn variant="text" @click="compatabilityMode = !compatabilityMode">
+          I don't see any players
+          <v-icon icon="mdi-chevron-right"></v-icon>
+        </v-btn>
+      </v-card-text>
+    </div>
+    <div v-if="compatabilityMode">
+      <v-table>
+        <thead>
+          <tr>
+            <th v-for="header in headers" class="text-left">
+              {{ header.title }}
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="item in unboughtPlayers" :key="item.name">
+            <td>{{ item.name }}</td>
+            <td>{{ item.team }}</td>
+            <td v-if="item.team != userData?.team">
+              {{ item.price.toLocaleString() }}
+            </td>
+            <td v-else>
+              <s>{{ item.price.toLocaleString() }}</s><br />
+              <span>{{ discountPrice(item.price).toLocaleString() }}</span>
+            </td>
+            <td>
+              <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item)" variant="text" />
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </div>
   </v-card>
 
 
@@ -83,6 +120,7 @@ const unboughtPlayers = computed(() => {
   }
 })
 
+const compatabilityMode = ref(false)
 const itemsPerPage = ref(10)
 const search = ref("")
 const sortBy = ref([{ key: 'price', order: 'desc' }],)

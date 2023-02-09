@@ -1,14 +1,46 @@
 <template>
   <v-card class="pa-6">
     <valueChips />
-    <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
-      <template v-slot:item.price="{ item }">
-        {{ item.columns.price?.toLocaleString() }}
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item.raw)" variant="text" />
-      </template>
-    </v-data-table>
+
+    <div v-if="!compatabilityMode">
+      <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
+        <template v-slot:item.price="{ item }">
+          {{ item.columns.price?.toLocaleString() }}
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item.raw)" variant="text" />
+        </template>
+      </v-data-table>
+
+      <v-card-text class="text-center">
+        <v-btn variant="text" @click="compatabilityMode = !compatabilityMode">
+          I don't see any players
+          <v-icon icon="mdi-chevron-right"></v-icon>
+        </v-btn>
+      </v-card-text>
+    </div>
+
+    <div v-if="compatabilityMode">
+      <v-table>
+        <thead>
+          <tr>
+            <th v-for="header in headers" class="text-left">
+              {{ header.title }}
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="item in myRoster" :key="item.name">
+            <td>{{ item.name }}</td>
+            <td>{{ item.price.toLocaleString() }}</td>
+            <td>
+              <v-btn icon="mdi-cash-fast" class="me-2" @click="sellPlayer(item)" variant="text" />
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </div>
   </v-card>
 
   <v-dialog v-model="dialogSell">
@@ -67,14 +99,15 @@ const myRoster = computed(() => {
 
 const itemsPerPage = ref(10)
 const headers = [
-  { title: 'Name', align: 'end', key: 'name' },
-  { title: 'Value', align: 'end', key: 'price' },
-  { title: 'Sell', align: 'end', key: 'actions', sortable: false },
+  { title: 'Name', align: 'start', key: 'name' },
+  { title: 'Value', align: 'start', key: 'price' },
+  { title: 'Sell', align: 'start', key: 'actions', sortable: false },
 ]
 
 const dialogSell = ref(false)
 const playerToSell = ref(null)
 const snackbar = ref(false)
+const compatabilityMode = ref(false)
 
 function sellPlayer(player: any) {
   playerToSell.value = player.id
