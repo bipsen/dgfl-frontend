@@ -21,7 +21,8 @@
     "vue-router": "^4.0.0",
     "vuefire": "^3.0.1",
     "vuetify": "^3.0.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

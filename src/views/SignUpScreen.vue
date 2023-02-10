@@ -40,6 +40,7 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/store/app'
 import { useField, useForm } from 'vee-validate'
+import { object, string } from 'yup';
 
 const appStore = useAppStore()
 
@@ -60,28 +61,15 @@ const teams = computed(() => {
     }, new Set);
 })
 
+const schema = object({
+    name: string().required().min(2),
+    email: string().required().email(),
+    password: string().required().min(6),
+    team: string().required(),
+});
+
 const { handleSubmit, handleReset } = useForm({
-    validationSchema: {
-        name(value: string) {
-            if (value?.length >= 2) return true
-
-            return 'Name needs to be at least 2 characters.'
-        },
-        email(value: string) {
-            if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
-
-            return 'Must be a valid e-mail.'
-        },
-        password(value: string) {
-            if (value?.length >= 6) return true
-
-            return 'Password needs to be at least 6 characters.'
-        },
-        team(value: string) {
-            if (value) return true
-            return 'Select a team.'
-        },
-    },
+    validationSchema: schema,
 })
 
 const name = useField('name')
