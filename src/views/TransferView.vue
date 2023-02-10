@@ -19,6 +19,8 @@
               <span>{{ discountPrice(item.columns.price).toLocaleString() }}</span>
             </td>
             <td>
+              <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
+                icon="mdi-information-outline" variant="text" />
               <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item.raw)" variant="text" />
             </td>
           </tr>
@@ -54,6 +56,8 @@
               <span>{{ discountPrice(item.price).toLocaleString() }}</span>
             </td>
             <td>
+              <v-btn :href="`https://www.pdga.com/player/${item.pdgaNumber}`" target="_blank"
+                icon="mdi-information-outline" variant="text" />
               <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item)" variant="text" />
             </td>
           </tr>
@@ -128,7 +132,7 @@ const headers = [
   { title: 'Name', align: 'start', key: 'name' },
   { title: 'Team', align: 'start', key: 'team' },
   { title: 'Price', align: 'start', key: 'price' },
-  { title: 'Buy', align: 'start', key: 'actions', sortable: false },
+  { title: 'Actions', align: 'start', key: 'actions', sortable: false },
 ]
 
 const dialogBuy = ref(false)
