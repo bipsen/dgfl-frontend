@@ -107,7 +107,7 @@ const submit = handleSubmit(values => {
 
 interface userInfo {
     cash: number,
-    roster: Array,
+    roster: string[],
     name: string,
     team: string
 }
