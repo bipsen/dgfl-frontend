@@ -105,7 +105,14 @@ const submit = handleSubmit(values => {
         });
 })
 
-async function createUserEntry(uid: string, userInfo: Object) {
+interface userInfo {
+    cash: number,
+    roster: Array,
+    name: string,
+    team: string
+}
+
+async function createUserEntry(uid: string, userInfo: userInfo) {
     // Add a new document in collection "cities"
     await setDoc(doc(db, "users", uid), {
         cash: 1000000,
