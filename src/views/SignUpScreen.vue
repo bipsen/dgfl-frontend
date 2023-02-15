@@ -109,6 +109,4 @@ async function createUserEntry(uid: string, userInfo: userInfo) {
         team: userInfo.team
     });
 }
-
-
 </script>
