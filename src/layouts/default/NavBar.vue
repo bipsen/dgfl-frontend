@@ -7,7 +7,7 @@
     </v-list>
 
     <template v-slot:append>
-      <div>
+      <div class="px-4 py-2">
         <v-btn block @click="logout">
           Logout
         </v-btn>
