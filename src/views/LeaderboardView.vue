@@ -57,12 +57,8 @@
           </v-list>
         </v-window-item>
       </v-window>
-
       <p class="pt-6">Last Updated: {{ baseInfo?.lastUpdate.toDate().toLocaleString() }}</p>
-
     </v-card-text>
-
-
   </v-card>
 </template>
 

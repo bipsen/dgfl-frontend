@@ -1,6 +1,6 @@
 <template>
     <div class="text-center px-12 py-6">
-        <v-card color="green">
+        <v-card color="secondary">
             <div>
                 <v-icon icon="mdi-cash" />
                 Cash: {{ userData?.cash.toLocaleString() }}

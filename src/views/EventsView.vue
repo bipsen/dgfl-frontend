@@ -21,8 +21,7 @@
           <td>{{ item.Date_start.toDate().toLocaleDateString() }}</td>
           <td>{{ item.Date_end.toDate().toLocaleDateString() }}</td>
           <td>
-            <v-btn :href="`https://www.pdga.com/tour/event/${item.Event_no}`" target="_blank" icon="mdi-open-in-new"
-              variant="text" />
+            <eventBtn :eventNo="item.Event_no" />
           </td>
         </tr>
       </tbody>
@@ -31,6 +30,7 @@
 </template>
 
 <script lang="ts" setup>
+import eventBtn from '@/components/eventBtn'
 import { computed } from 'vue'
 import { useFirestore, useCollection } from 'vuefire'
 import { collection } from 'firebase/firestore'
