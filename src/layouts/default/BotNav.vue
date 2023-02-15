@@ -6,7 +6,7 @@
         </v-btn>
 
         <v-btn value="transfer" to="/transfer">
-            <v-icon>mdi-cart</v-icon>
+            <v-icon>mdi-swap-horizontal-bold</v-icon>
             Transfer
         </v-btn>
 
