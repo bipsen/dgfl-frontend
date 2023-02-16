@@ -1,5 +1,6 @@
 <template>
   <div class="pt-12 px-12" style="text-align: center;" align-center>
+    <h2 class="font-weight-light">discolf.win</h2>
     <h1 class="font-weight-black">DISC GOLF FANTASY LEAGUE</h1>
   </div>
 
@@ -30,15 +31,13 @@
     </v-card>
   </div>
 
-  <valueChips />
-
-
+<valueChips />
 </template>
 
 
 <script lang="ts" setup>
 import valueChips from '@/components/valueChips.vue'
-import eventBtn from '@/components/eventBtn'
+import eventBtn from '@/components/eventBtn.vue'
 import { computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
 import { collection, doc } from 'firebase/firestore'
