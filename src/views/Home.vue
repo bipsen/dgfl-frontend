@@ -2,6 +2,7 @@
   <div class="pt-12 px-12" style="text-align: center;" align-center>
     <h1 class="font-weight-black">DISC GOLF FANTASY LEAGUE</h1>
   </div>
+
   <div class="pt-6 px-6">
     <v-card class="mx-auto">
       <div class="d-flex justify-between">
@@ -29,7 +30,8 @@
     </v-card>
   </div>
 
-  <valueChips class="mt-12" />
+  <valueChips />
+
 
 </template>
 

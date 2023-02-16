@@ -1,15 +1,30 @@
 <template>
     <div class="text-center px-12 py-6">
-        <v-card color="secondary">
-            <div>
-                <v-icon icon="mdi-cash" />
-                Cash: {{ userData?.cash.toLocaleString() }}
-            </div>
-            <div>
-                <v-icon icon="mdi-currency-usd" />
-                Roster: {{ rosterValue?.toLocaleString() }}
-            </div>
-        </v-card>
+        <v-chip class="ma-2" size="large">
+            Cash:
+            {{
+                Intl.NumberFormat('en-US', {
+                    notation: "compact",
+                    maximumFractionDigits: 1
+                }).format(userData?.cash)
+            }}
+            <v-tooltip activator="parent" location="bottom">
+                {{ userData?.cash.toLocaleString() }}
+            </v-tooltip>
+        </v-chip>
+
+        <v-chip class="ma-2" size="large">
+            Value:
+            {{
+                Intl.NumberFormat('en-US', {
+                    notation: "compact",
+                    maximumFractionDigits: 1
+                }).format(rosterValue)
+            }}
+            <v-tooltip activator="parent" location="bottom">
+                {{ rosterValue?.toLocaleString() }}
+            </v-tooltip>
+        </v-chip>
     </div>
 </template>
 
