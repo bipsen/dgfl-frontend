@@ -1,7 +1,11 @@
 <template>
+  <v-alert closable type="error" icon="mdi-currency-usd-off" v-model="sellAlert">
+    You bought this player this season. Please wait until after next
+    event.
+  </v-alert>
+
   <v-card class="pa-6">
     <valueChips />
-
     <div v-if="!compatabilityMode">
       <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="myRoster" item-value="name">
         <template v-slot:item.price="{ item }">
@@ -46,7 +50,7 @@
   <v-dialog v-model="dialogSell">
     <v-card title="Sell player">
       <v-card-text>
-        Are you sure you want to sell {{ playerToSell? playerMap[playerToSell].name : null}}?
+        Are you sure you want to sell {{ playerToSell ? playerMap[playerToSell].name : null }}?
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -55,16 +59,7 @@
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
-  </v-dialog>
-
-  <v-snackbar v-model="snackbar" :timeout="5000" color="error">
-    You bought this player this season. Please wait until after next event.
-    <template v-slot:actions>
-      <v-btn variant="text" @click="snackbar = false">
-        Close
-      </v-btn>
-    </template>
-  </v-snackbar>
+</v-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -106,7 +101,7 @@ const headers = [
 
 const dialogSell = ref(false)
 const playerToSell = ref(null)
-const snackbar = ref(false)
+const sellAlert = ref(false)
 const compatabilityMode = ref(false)
 
 function sellPlayer(player: any) {
@@ -123,7 +118,7 @@ async function sellPlayerConfirm() {
   dialogSell.value = false
   if (playerToSell.value && userData.value) {
     if (userData.value.justBought.includes(playerToSell.value)) {
-      snackbar.value = true
+      sellAlert.value = true
     } else {
       const playerPrice = playerMap.value[playerToSell.value].price
       await updateDoc(userRef, {

@@ -29,14 +29,14 @@
                 </v-card-text>
             </form>
         </v-card>
-    </v-sheet>
+</v-sheet>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useFirestore, useFirebaseAuth, useCollection } from 'vuefire'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/store/app'
 import { useField, useForm } from 'vee-validate'
@@ -53,13 +53,19 @@ const visible = ref(false)
 
 
 const loading = ref(false)
-const players = useCollection(collection(db, 'players'))
-const teams = computed(() => {
-    return players.value.reduce((acc, player) => {
-        acc.add(player.team);
-        return acc;
-    }, new Set);
-})
+const teams = [
+    'DGA, Gateway',
+    'Discmania',
+    'Discraft',
+    'Dynamic Discs',
+    'Infinite, Clash, Thought Space',
+    'Innova',
+    'Kastaplast, Westside, Albatross',
+    'Latitude 64',
+    'Lone Star Discs',
+    'MVP',
+    'Prodigy'
+]
 
 const schema = object({
     name: string().required().min(2),

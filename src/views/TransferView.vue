@@ -1,4 +1,8 @@
 <template>
+  <v-alert closable type="error" icon="mdi-currency-usd-off" v-model="buyAlert">
+    You cannot afford this player
+  </v-alert>
+
   <v-card class="pa-6">
     <valueChips />
 
@@ -68,7 +72,6 @@
     </div>
   </v-card>
 
-
   <v-dialog v-model="dialogBuy">
     <v-card title="Buy player">
       <v-card-text>
@@ -82,16 +85,7 @@
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
-  </v-dialog>
-
-  <v-snackbar v-model="snackbar" :timeout="5000" color="error">
-    You cannot afford this player
-    <template v-slot:actions>
-      <v-btn variant="text" @click="snackbar = false">
-        Close
-      </v-btn>
-    </template>
-</v-snackbar>
+</v-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -139,7 +133,7 @@ const headers = [
 
 const dialogBuy = ref(false)
 const playerToBuy = ref(null)
-const snackbar = ref(false)
+const buyAlert = ref(false)
 
 function buyPlayer(player: any) {
   playerToBuy.value = player.id
@@ -169,7 +163,7 @@ async function buyPlayerConfirm() {
         justBought: arrayUnion(playerToBuy.value)
       });
     } else {
-      snackbar.value = true
+      buyAlert.value = true
     }
   }
 
