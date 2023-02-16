@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center px-12 py-6">
+    <div class="text-center mx-auto py-6">
         <v-chip class="ma-2" size="large">
             Cash:
             {{
@@ -14,7 +14,7 @@
         </v-chip>
 
         <v-chip class="ma-2" size="large">
-            Value:
+            Roster:
             {{
                 Intl.NumberFormat('en-US', {
                     notation: "compact",
