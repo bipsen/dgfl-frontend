@@ -1,8 +1,7 @@
 <template>
     <div class="text-center mx-auto py-6">
         <v-chip class="ma-2" size="large">
-            Cash:
-            {{
+            Cash: ${{
                 Intl.NumberFormat('en-US', {
                     notation: "compact",
                     maximumFractionDigits: 1
@@ -14,8 +13,7 @@
         </v-chip>
 
         <v-chip class="ma-2" size="large">
-            Roster:
-            {{
+            Roster: ${{
                 Intl.NumberFormat('en-US', {
                     notation: "compact",
                     maximumFractionDigits: 1
@@ -25,7 +23,7 @@
                 {{ rosterValue?.toLocaleString() }}
             </v-tooltip>
         </v-chip>
-    </div>
+</div>
 </template>
 
 <script lang="ts" setup>

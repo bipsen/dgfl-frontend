@@ -1,0 +1,6 @@
+.v-data-table td,
+.v-data-table th,
+.v-table td,
+.v-table td {
+    font-size: 0.9rem;
+}

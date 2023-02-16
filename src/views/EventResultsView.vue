@@ -1,0 +1,1 @@
+<template><div>Event {{ $route.params.id }}</div></template>

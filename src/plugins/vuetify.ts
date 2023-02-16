@@ -23,5 +23,9 @@ export default createVuetify({
   },
   theme: {
     defaultTheme: 'dark'
+  },
+  defaults: {
+    VDataTable: { density: 'compact' },
+    VTable: { density: 'compact' },
   }
 })

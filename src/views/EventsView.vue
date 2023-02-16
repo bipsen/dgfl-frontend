@@ -13,6 +13,12 @@
           <th class="text-left">
             End date
           </th>
+          <th class="text-left">
+            Result
+          </th>
+          <th class="text-left">
+            PDGA
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +26,10 @@
           <td>{{ item.Title }} {{ item.Subtitle }}</td>
           <td>{{ item.Date_start?.toDate().toLocaleDateString() }}</td>
           <td>{{ item.Date_end?.toDate().toLocaleDateString() }}</td>
+          <td>
+            <v-btn :value="item.id" :to="`/events/${item.id}`" icon="mdi-file-chart-check" variant="text"
+              :disabled="item.Date_start?.toDate() > new Date()" />
+          </td>
           <td>
             <eventBtn :eventNo="item.Event_no" />
           </td>

@@ -19,9 +19,11 @@
               <span>{{ discountPrice(item.columns.price).toLocaleString() }}</span>
             </td>
             <td>
-              <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
-                icon="mdi-information-outline" variant="text" />
-              <v-btn icon="mdi-cart" class="me-2" @click="buyPlayer(item.raw)" variant="text" />
+              <div class="d-flex justify-space-between">
+                <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
+                  icon="mdi-information-outline" variant="text" />
+                <v-btn icon="mdi-cart" @click="buyPlayer(item.raw)" variant="text" />
+              </div>
             </td>
           </tr>
         </template>
@@ -70,7 +72,7 @@
   <v-dialog v-model="dialogBuy">
     <v-card title="Buy player">
       <v-card-text>
-        Are you sure you want to buy {{ playerToBuy? playerMap[playerToBuy].name : null}}?
+        Are you sure you want to buy {{ playerToBuy ? playerMap[playerToBuy].name : null }}?
         You can only sell after next event.
       </v-card-text>
       <v-card-actions>
@@ -89,7 +91,7 @@
         Close
       </v-btn>
     </template>
-  </v-snackbar>
+</v-snackbar>
 </template>
 
 <script lang="ts" setup>
