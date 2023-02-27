@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="appStore.drawer" location="bottom" temporary>
+  <v-navigation-drawer v-model="localStore.drawer" location="bottom" temporary>
     <v-list nav>
       <v-list-item prepend-icon="mdi-home" title="Home" to="/"></v-list-item>
       <v-list-item prepend-icon="mdi-calendar" title="Events" to="/events"></v-list-item>
@@ -17,11 +17,13 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store/app'
+import { useLocalStore } from '@/store/local'
 import { useRouter } from 'vue-router'
 import { signOut } from "firebase/auth";
 import { useFirebaseAuth } from 'vuefire'
 
 const appStore = useAppStore()
+const localStore = useLocalStore()
 const router = useRouter()
 const auth = useFirebaseAuth()
 

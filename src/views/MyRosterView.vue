@@ -59,7 +59,7 @@
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
-</v-dialog>
+  </v-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -67,30 +67,12 @@ import valueChips from '@/components/valueChips.vue'
 import { ref, computed } from 'vue'
 import { useFirestore, useCollection, useDocument } from 'vuefire'
 import { collection, doc, updateDoc, arrayRemove, increment } from 'firebase/firestore'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
-const db = useFirestore()
 
-const userRef = doc(db, 'users', appStore.curUserId)
-const userData = useDocument(userRef)
-
-const players = useCollection(collection(db, 'players'))
-const playerMap = computed(() => {
-  return players.value.reduce((acc, player) => {
-    acc[player.id] = player;
-    return acc;
-  }, {});
-})
-
-const myRoster = computed(() => {
-  if (userData.value) {
-    return userData.value.roster.reduce((acc, playerId) => {
-      acc.push(playerMap.value[playerId]);
-      return acc;
-    }, []);
-  }
-})
+const { userRef, userData, playerMap, myRoster } = storeToRefs(appStore)
 
 const itemsPerPage = ref(10)
 const headers = [
@@ -121,10 +103,10 @@ async function sellPlayerConfirm() {
       sellAlert.value = true
     } else {
       const playerPrice = playerMap.value[playerToSell.value].price
-      await updateDoc(userRef, {
+      await updateDoc(userRef.value, {
         cash: increment(playerPrice)
       });
-      await updateDoc(userRef, {
+      await updateDoc(userRef.value, {
         roster: arrayRemove(playerToSell.value)
       });
     }

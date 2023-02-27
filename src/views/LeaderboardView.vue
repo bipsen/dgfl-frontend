@@ -31,7 +31,7 @@
             </thead>
             <tbody>
               <tr v-for="(item, index) in playerWorths" :key="item.name">
-                <td>{{ index+ 1 }}</td>
+                <td>{{ index + 1 }}</td>
                 <td>{{ item.name }}</td>
                 <td style="font-weight: bold;">{{ (item.cash + item.rosterWorth).toLocaleString() }}</td>
                 <td>{{ item.cash.toLocaleString() }}</td>
@@ -76,6 +76,10 @@ import {
   LinearScale
 } from 'chart.js'
 import { Bar } from 'vue-chartjs'
+import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/store/app'
+
+const appStore = useAppStore()
 
 const tab = ref(null)
 
@@ -86,13 +90,7 @@ const users = useCollection(collection(db, 'users'))
 
 const baseInfo = useDocument(doc(db, 'base', 'base'))
 
-const players = useCollection(collection(db, 'players'))
-const playerMap = computed(() => {
-  return players.value.reduce((acc, player) => {
-    acc[player.id] = player;
-    return acc;
-  }, {});
-})
+const { playerMap } = storeToRefs(appStore)
 
 const playerWorths = computed(() => {
   let data = []

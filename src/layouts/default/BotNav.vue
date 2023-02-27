@@ -15,7 +15,7 @@
             Leaderboard
         </v-btn>
 
-        <v-btn @click="appStore.drawer = !appStore.drawer">
+        <v-btn @click="localStore.drawer = !localStore.drawer">
             <v-icon>mdi-menu</v-icon>
             More
         </v-btn>
@@ -24,7 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from '@/store/app'
+import { useLocalStore } from '@/store/local'
 
-const appStore = useAppStore()
+const localStore = useLocalStore()
 </script>
+

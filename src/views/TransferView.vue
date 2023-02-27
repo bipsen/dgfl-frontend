@@ -85,29 +85,19 @@
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
-</v-dialog>
+  </v-dialog>
 </template>
 
 <script lang="ts" setup>
 import valueChips from '@/components/valueChips.vue'
 import { ref, computed } from 'vue'
-import { useFirestore, useCollection, useDocument } from 'vuefire'
-import { collection, doc, updateDoc, arrayUnion, increment } from 'firebase/firestore'
+import { updateDoc, arrayUnion, increment } from 'firebase/firestore'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
-const db = useFirestore()
 
-const userRef = doc(db, 'users', appStore.curUserId)
-const userData = useDocument(userRef)
-
-const players = useCollection(collection(db, 'players'))
-const playerMap = computed(() => {
-  return players.value.reduce((acc, player) => {
-    acc[player.id] = player;
-    return acc;
-  }, {});
-})
+const { userRef, userData, players, playerMap } = storeToRefs(appStore)
 
 const unboughtPlayers = computed(() => {
   if (userData.value) {
@@ -153,13 +143,13 @@ async function buyPlayerConfirm() {
       playerPrice = discountPrice(playerPrice)
     }
     if (playerPrice <= userData.value?.cash) {
-      await updateDoc(userRef, {
+      await updateDoc(userRef.value, {
         cash: increment(-playerPrice)
       });
-      await updateDoc(userRef, {
+      await updateDoc(userRef.value, {
         roster: arrayUnion(playerToBuy.value)
       });
-      await updateDoc(userRef, {
+      await updateDoc(userRef.value, {
         justBought: arrayUnion(playerToBuy.value)
       });
     } else {
