@@ -1,5 +1,8 @@
 <template>
-  <v-card class="pa-6">
+  <v-card>
+
+    <v-toolbar title="Events" />
+
     <v-table>
       <thead>
         <tr>
@@ -36,7 +39,7 @@
         </tr>
       </tbody>
     </v-table>
-</v-card>
+  </v-card>
 </template>
 
 <script lang="ts" setup>

@@ -1,15 +1,27 @@
 <template>
-    <v-card :title="event.Title">
-        <v-list lines="one">
-            <v-list-item v-for="player in players" :key="player.name">
-                <v-list-item-title>
-                    {{ player.name }}
-                    <v-chip :color="player.score > 0 ? 'success' : 'error'">
-                        {{ player.score.toLocaleString() }}
-                    </v-chip>
-                </v-list-item-title>
-            </v-list-item>
-        </v-list>
+    <v-card>
+
+        <v-toolbar v-if="event" :title="event.Title" />
+
+
+        <v-table>
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        Name
+                    </th>
+                    <th class="text-left">
+                        Score
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="player in players" :key="player.name">
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.score.toLocaleString() }}</td>
+                </tr>
+            </tbody>
+        </v-table>
     </v-card>
 </template>
 

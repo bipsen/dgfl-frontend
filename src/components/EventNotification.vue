@@ -4,7 +4,7 @@
             <div v-if="lastEvent.data">
                 <v-card-title>
                     {{ lastEvent.data.Title }}
-                    <eventBtn :event="lastEvent.data.Title" />
+                    <v-btn :to="`/events/${lastEventId}`" icon="mdi-open-in-new" variant="text" @click="dialog = false" />
                 </v-card-title>
 
                 <v-card-subtitle>
@@ -39,15 +39,15 @@
 </template>
 
 <script lang="ts" setup>
-import eventBtn from '@/components/eventBtn.vue'
 import { ref, computed, watch, watchEffect } from 'vue'
-import { useFirestore, useDocument, useCollection } from 'vuefire'
+import { useFirestore } from 'vuefire'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
 const db = useFirestore()
+
 const dialog = ref(false)
 
 const { baseInfo, userRef, userData, myRoster, playerMap } = storeToRefs(appStore)
