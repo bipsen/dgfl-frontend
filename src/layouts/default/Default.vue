@@ -3,6 +3,7 @@
     <NavBar />
     <BotNav />
     <default-view />
+    <EventNotification />
   </v-app>
 </template>
 
@@ -10,6 +11,7 @@
 import NavBar from './NavBar.vue'
 import DefaultView from './View.vue'
 import BotNav from './BotNav.vue'
+import EventNotification from '@/components/EventNotification.vue'
 </script>
 
 <style scoped>

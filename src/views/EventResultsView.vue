@@ -39,7 +39,7 @@ const players = computed(() => {
             })
         }
     }
-    return acc.sort((a, b) => b.score - a.score);;
+    return acc.sort((a, b) => b.score - a.score);
 });
 
 </script>
