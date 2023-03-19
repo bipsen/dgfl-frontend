@@ -31,7 +31,7 @@
           <td>{{ item.Date_end?.toDate().toLocaleDateString() }}</td>
           <td>
             <v-btn :value="item.id" :to="`/events/${item.id}`" icon="mdi-file-chart-check" variant="text"
-              :disabled="item.Date_start?.toDate() > new Date()" />
+              :disabled="item.Date_end?.toDate() > new Date()" />
           </td>
           <td>
             <eventBtn :eventNo="item.Event_no" />
