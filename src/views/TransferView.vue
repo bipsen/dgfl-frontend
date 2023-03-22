@@ -15,19 +15,12 @@
           <tr>
             <td>{{ item.columns.name }}</td>
             <td>{{ item.columns.team }}</td>
-            <td v-if="item.columns.team != userData?.team">
-              {{ item.columns.price.toLocaleString() }}
-            </td>
-            <td v-else>
-              <s>{{ item.columns.price.toLocaleString() }}</s><br />
-              <span>{{ discountPrice(item.columns.price).toLocaleString() }}</span>
-            </td>
-            <td>
-              <div class="d-flex justify-space-between">
-                <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
-                  icon="mdi-information-outline" variant="text" />
-                <v-btn icon="mdi-cart" @click="buyPlayer(item.raw)" variant="text" />
-              </div>
+            <td>{{ item.columns.price.toLocaleString() }}</td>
+            <div class="d-flex justify-space-between">
+              <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
+                icon="mdi-information-outline" variant="text" />
+              <v-btn icon="mdi-cart" @click="buyPlayer(item.raw)" variant="text" />
+            </div>
             </td>
           </tr>
         </template>
@@ -54,13 +47,7 @@
           <tr v-for="item in unboughtPlayers" :key="item.name">
             <td>{{ item.name }}</td>
             <td>{{ item.team }}</td>
-            <td v-if="item.team != userData?.team">
-              {{ item.price.toLocaleString() }}
-            </td>
-            <td v-else>
-              <s>{{ item.price.toLocaleString() }}</s><br />
-              <span>{{ discountPrice(item.price).toLocaleString() }}</span>
-            </td>
+            <td>{{ item.price.toLocaleString() }}</td>
             <td>
               <v-btn :href="`https://www.pdga.com/player/${item.pdgaNumber}`" target="_blank"
                 icon="mdi-information-outline" variant="text" />
@@ -139,9 +126,6 @@ async function buyPlayerConfirm() {
   dialogBuy.value = false
   if (playerToBuy.value) {
     let playerPrice = playerMap.value[playerToBuy.value].price
-    if (userData.value?.team == playerMap.value[playerToBuy.value].team) {
-      playerPrice = discountPrice(playerPrice)
-    }
     if (playerPrice <= userData.value?.cash) {
       await updateDoc(userRef.value, {
         cash: increment(-playerPrice)
@@ -158,9 +142,5 @@ async function buyPlayerConfirm() {
   }
 
   playerToBuy.value = null
-}
-
-function discountPrice(price: number) {
-  return Math.round(price * .9)
 }
 </script>
