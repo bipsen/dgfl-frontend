@@ -15,12 +15,15 @@
           <tr>
             <td>{{ item.columns.name }}</td>
             <td>{{ item.columns.team }}</td>
-            <td>{{ item.columns.price.toLocaleString() }}</td>
-            <div class="d-flex justify-space-between">
-              <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
-                icon="mdi-information-outline" variant="text" />
-              <v-btn icon="mdi-cart" @click="buyPlayer(item.raw)" variant="text" />
-            </div>
+            <td>
+              {{ item.columns.price.toLocaleString() }}
+            </td>
+            <td>
+              <div class="d-flex justify-space-between">
+                <v-btn :href="`https://www.pdga.com/player/${item.raw.pdgaNumber}`" target="_blank"
+                  icon="mdi-information-outline" variant="text" />
+                <v-btn icon="mdi-cart" @click="buyPlayer(item.raw)" variant="text" />
+              </div>
             </td>
           </tr>
         </template>
@@ -47,7 +50,9 @@
           <tr v-for="item in unboughtPlayers" :key="item.name">
             <td>{{ item.name }}</td>
             <td>{{ item.team }}</td>
-            <td>{{ item.price.toLocaleString() }}</td>
+            <td>
+              {{ item.price.toLocaleString() }}
+            </td>
             <td>
               <v-btn :href="`https://www.pdga.com/player/${item.pdgaNumber}`" target="_blank"
                 icon="mdi-information-outline" variant="text" />
